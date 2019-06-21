@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<launch>
+    <include file="$(find dlut_car)/launch/tf_info.launch"/>
+    <include file="$(find ls01g)/launch/ls01g.launch" />
+    <include file="$(find art_imu)/launch/imu.launch"/>
+    <include file="$(find cartographer_ros)/launch/demo_pr2.launch"/>
+    <node name="joy" pkg="joy" type="joy_node"/>
+    <node name="car_joy" pkg="dlut_car" type="car_joy.py"/>
+    <node name="car_serial" pkg="dlut_car" type="car_serial" output="screen"/>
+    <node name="rosbag" pkg="rosbag" type="record" args="/scan -O /home/zbt/$(anon record).bag"/> 
+    <!--node name="rviz" pkg="rviz" type="rviz"
+      args="-d $(find cartographer_ros)/configuration_files/demo_2d.rviz"/-->
+</launch>

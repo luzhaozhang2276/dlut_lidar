@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<launch>
+    <param name="use_sim_time" value="true"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="/home/zbt/load.yaml" output="screen"/>
+    <node pkg="rosbag" name="play" type="play" args="-k --clock /home/zbt/play.bag"/>
+    <include file="$(find dlut_car)/launch/tf_info.launch"/>
+    <include file="$(find cartographer_ros)/launch/demo_taurob_tracker.launch"/>
+
+    <!-- Navstack -->
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+        <!-- local planner -->
+         <!--
+        <param name="base_global_planner" value="global_planner/GlobalPlanner"/>  
+         -->
+        <param name="base_global_planner" value="navfn/NavfnROS"/>  
+        <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS"/>  
+        
+        <rosparam file="$(find dlut_car)/config/dwa_local_planner_params.yaml" command="load"/>
+        <!-- costmap layers -->    
+        <rosparam file="$(find dlut_car)/config/local_costmap_params.yaml" command="load"/>
+        <rosparam file="$(find dlut_car)/config/global_costmap_params.yaml" command="load"/> 
+        <!-- move_base params -->
+        <rosparam file="$(find dlut_car)/config/base_global_planner_params.yaml" command="load"/>
+        <rosparam file="$(find dlut_car)/config/move_base_params.yaml" command="load"/>
+    </node>
+</launch>

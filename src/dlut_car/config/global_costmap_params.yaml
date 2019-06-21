@@ -1,0 +1,26 @@
+global_costmap:
+    footprint: [[-0.305, -0.18], [-0.305, 0.18], [0.305, 0.18], [0.305, -0.18]]
+    footprint_padding: 0.01
+    transform_tolerance: 0.5
+    update_frequency: 10.0
+    publish_frequency: 10.0
+
+    global_frame: /map
+    robot_base_frame: /base_link
+    resolution: 0.10
+
+    rolling_window: false
+    track_unknown_space: false
+
+    plugins: 
+        - {name: static,    type: "costmap_2d::StaticLayer"}
+        - {name: inflation, type: "costmap_2d::InflationLayer"}
+
+    static:        
+        map_topic: /map 
+        subscribe_to_updates: true
+
+    inflation:
+        inflation_radius: 0.1
+        cost_scaling_factor: 8.0
+
